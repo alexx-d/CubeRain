@@ -33,9 +33,17 @@ public class CubeSpawner : Spawner<Cube>
 
             cube.transform.SetPositionAndRotation(transform.position + randomOffset, Random.rotation);
 
-            cube.Init(this);
+            cube.Init();
+            cube.Expired += OnCubeExpired;
         }
 
         return cube;
+    }
+
+    private void OnCubeExpired(Cube cube)
+    {
+        cube.Expired -= OnCubeExpired;
+
+        Release(cube);
     }
 }

@@ -1,43 +1,47 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(CubeCollisionHandler), typeof(ColorChanger))]
 public class Cube : MonoBehaviour
 {
     [SerializeField] private float _minLifetime = 2f;
     [SerializeField] private float _maxLifetime = 5f;
 
-    private Spawner<Cube> _spawner;
+    private CubeCollisionHandler _collisionHandler;
+    private ColorChanger _colorChanger;
     private Rigidbody _rb;
-    private Renderer _renderer;
     private bool _hasTouchedPlatform = false;
+
+    public event Action<Cube> Expired;
 
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
+        _collisionHandler = GetComponent<CubeCollisionHandler>();
+        _colorChanger = GetComponent<ColorChanger>();
         _rb = GetComponent<Rigidbody>();
     }
 
-    public void Init(Spawner<Cube> spawner)
-    {
-        _spawner = spawner;
-        _hasTouchedPlatform = false;
-        _renderer.material.color = Color.white;
+    private void OnEnable() => _collisionHandler.PlatformTouched += OnPlatformTouched;
+    private void OnDisable() => _collisionHandler.PlatformTouched -= OnPlatformTouched;
 
+    public void Init()
+    {
+        _hasTouchedPlatform = false;
+        _colorChanger.ResetColor();
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnPlatformTouched(Platform platform)
     {
-        if (_hasTouchedPlatform == false && collision.gameObject.TryGetComponent(out Platform platform))
+        if (_hasTouchedPlatform == false)
         {
             _hasTouchedPlatform = true;
+            _colorChanger.SetRandomColor();
 
-            _renderer.material.color = Random.ColorHSV();
-
-            float lifetime = Random.Range(_minLifetime, _maxLifetime);
+            float lifetime = UnityEngine.Random.Range(_minLifetime, _maxLifetime);
             StartCoroutine(LifeTimer(lifetime));
         }
     }
@@ -46,14 +50,6 @@ public class Cube : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if (_spawner != null)
-        {
-            _spawner.Release(this);
-        }
-    }
-
-    private void OnDisable()
-    {
-        StopAllCoroutines();
+        Expired?.Invoke(this);
     }
 }

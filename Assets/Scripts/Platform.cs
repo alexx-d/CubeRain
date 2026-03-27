@@ -1,16 +1,17 @@
 using UnityEngine;
 
+[RequireComponent(typeof(ColorChanger))]
 public class Platform : MonoBehaviour
 {
-    private Renderer _renderer;
+    private ColorChanger _colorChanger;
 
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
+        _colorChanger = GetComponent<ColorChanger>();
     }
 
-    void Start()
+    public void Start()
     {
-        _renderer.material.color = Random.ColorHSV();
+        _colorChanger.SetRandomColor();
     }
 }
