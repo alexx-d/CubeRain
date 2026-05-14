@@ -31,7 +31,6 @@ public class BombExploder : MonoBehaviour
 
     private void SpawnEffect(Vector3 position)
     {
-        if (_explosionEffect != null)
-            Instantiate(_explosionEffect, position, Quaternion.identity);
+        Instantiate(_explosionEffect, position, Quaternion.identity);
     }
 }

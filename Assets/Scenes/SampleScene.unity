@@ -509,8 +509,9 @@ GameObject:
   - component: {fileID: 537841476}
   - component: {fileID: 537841478}
   - component: {fileID: 537841477}
+  - component: {fileID: 537841479}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: BombInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -532,7 +533,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 220, y: -220}
+  m_AnchoredPosition: {x: 220, y: -235}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &537841477
@@ -632,6 +633,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 537841475}
   m_CullTransparentMesh: 1
+--- !u!114 &537841479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537841475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5fbc3f41e179947b9b6ae1a3a96a79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnerObject: {fileID: 1527073235}
+  _textField: {fileID: 537841477}
+  _label: "\u0411\u043E\u043C\u0431\u044B"
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,8 +778,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -200}
-  m_SizeDelta: {x: 500, y: 400}
+  m_AnchoredPosition: {x: 175, y: -200}
+  m_SizeDelta: {x: 350, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &888395196
 MonoBehaviour:
@@ -1000,54 +1016,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
---- !u!1 &981841303
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 981841305}
-  - component: {fileID: 981841304}
-  m_Layer: 0
-  m_Name: SpawnerStatusView
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &981841304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981841303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f5fbc3f41e179947b9b6ae1a3a96a79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cubeSpawner: {fileID: 1996317960}
-  _bombSpawner: {fileID: 1527073235}
-  _cubeInfoText: {fileID: 2115700263}
-  _bombInfoText: {fileID: 537841477}
---- !u!4 &981841305
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981841303}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1086067881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,6 +1480,7 @@ MonoBehaviour:
   _prefab: {fileID: 9128225651240119072, guid: f1c8417cef3eb524b88371f38abb76fd, type: 3}
   _poolCapacity: 5
   _poolMaxSize: 10
+  _cubeSpawner: {fileID: 1996317960}
 --- !u!4 &1527073236
 Transform:
   m_ObjectHideFlags: 0
@@ -1701,7 +1670,6 @@ MonoBehaviour:
   _spawnRadius: 5
   _spawnInSphere: 0
   _repeatRate: 1
-  _spawner: {fileID: 1527073235}
 --- !u!4 &1996317961
 Transform:
   m_ObjectHideFlags: 0
@@ -1728,8 +1696,9 @@ GameObject:
   - component: {fileID: 2115700262}
   - component: {fileID: 2115700264}
   - component: {fileID: 2115700263}
+  - component: {fileID: 2115700265}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CubesInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1851,6 +1820,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115700261}
   m_CullTransparentMesh: 1
+--- !u!114 &2115700265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115700261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5fbc3f41e179947b9b6ae1a3a96a79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnerObject: {fileID: 1996317960}
+  _textField: {fileID: 2115700263}
+  _label: "\u041A\u0443\u0431\u044B"
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1859,7 +1843,6 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 1996317961}
   - {fileID: 1527073236}
-  - {fileID: 981841305}
   - {fileID: 47550537}
   - {fileID: 1803570495}
   - {fileID: 1170826817}

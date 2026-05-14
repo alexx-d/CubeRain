@@ -3,43 +3,41 @@ using TMPro;
 
 public class SpawnerStatusView : MonoBehaviour
 {
-    [SerializeField] private CubeSpawner _cubeSpawner;
-    [SerializeField] private BombSpawner _bombSpawner;
+    [SerializeField] private MonoBehaviour _spawnerObject;
+    [SerializeField] private TMP_Text _textField;
+    [SerializeField] private string _label;
 
-    [SerializeField] private TMP_Text _cubeInfoText;
-    [SerializeField] private TMP_Text _bombInfoText;
+    private ISpawnerInfo _spawner;
+
+    private void Awake()
+    {
+        _spawner = _spawnerObject as ISpawnerInfo;
+    }
 
     private void OnEnable()
     {
-        _cubeSpawner.InfoChanged += UpdateCubeStats;
-        _bombSpawner.InfoChanged += UpdateBombStats;
-
-        UpdateCubeStats();
-        UpdateBombStats();
-    }
-
-    private void OnDisable()
-    {
-        _cubeSpawner.InfoChanged -= UpdateCubeStats;
-        _bombSpawner.InfoChanged -= UpdateBombStats;
-    }
-
-    private void UpdateCubeStats() =>
-        DisplayStats(_cubeSpawner, _cubeInfoText, "Кубы");
-
-    private void UpdateBombStats() =>
-        DisplayStats(_bombSpawner, _bombInfoText, "Бомбы");
-
-    private void DisplayStats<T>(Spawner<T> spawner, TMP_Text textField, string label) where T : MonoBehaviour
-    {
-        if (spawner == null || textField == null)
+        if (_spawner == null)
         {
             return;
         }
 
-        textField.text = $"{label}:\n" +
-                         $"Всего заспавнено: {spawner.TotalSpawned}\n" +
-                         $"Создано в пуле: {spawner.CreatedCount}\n" +
-                         $"Активно на сцене: {spawner.ActiveCount}";
+        _spawner.InfoChanged += UpdateText;
+        UpdateText();
+    }
+
+    private void OnDisable()
+    {
+        if (_spawner is not null)
+        {
+            _spawner.InfoChanged -= UpdateText;
+        }
+    }
+
+    private void UpdateText()
+    {
+        _textField.text = $"{_label}:\n" +
+                         $"Всего: {_spawner.TotalSpawned}\n" +
+                         $"В пуле: {_spawner.CreatedCount}\n" +
+                         $"Активно: {_spawner.ActiveCount}";
     }
 }

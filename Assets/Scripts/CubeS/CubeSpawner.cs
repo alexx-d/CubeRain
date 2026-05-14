@@ -1,6 +1,7 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CubeSpawner : Spawner<Cube>
 {
@@ -8,7 +9,7 @@ public class CubeSpawner : Spawner<Cube>
     [SerializeField] private bool _spawnInSphere = false;
     [SerializeField] private float _repeatRate = 1f;
 
-    [SerializeField] private BombSpawner _spawner;
+    public event Action<Vector3> CubeDestroyed;
 
     private void Start()
     {
@@ -29,15 +30,15 @@ public class CubeSpawner : Spawner<Cube>
 
                 if (_spawnInSphere)
                 {
-                    randomOffset = Random.insideUnitSphere * _spawnRadius;
+                    randomOffset = UnityEngine.Random.insideUnitSphere * _spawnRadius;
                 }
                 else
                 {
-                    Vector2 circle = Random.insideUnitCircle * _spawnRadius;
+                    Vector2 circle = UnityEngine.Random.insideUnitCircle * _spawnRadius;
                     randomOffset = new Vector3(circle.x, 0, circle.y);
                 }
 
-                cube.transform.SetPositionAndRotation(transform.position + randomOffset, Random.rotation);
+                cube.transform.SetPositionAndRotation(transform.position + randomOffset, UnityEngine.Random.rotation);
 
                 cube.Init();
                 cube.Expired += OnCubeExpired;
@@ -50,20 +51,9 @@ public class CubeSpawner : Spawner<Cube>
     private void OnCubeExpired(Cube cube)
     {
         cube.Expired -= OnCubeExpired;
-
+        Vector3 position = cube.transform.position;
         Release(cube);
 
-        Bomb bomb = _spawner.Get();
-        bomb.transform.SetPositionAndRotation(cube.transform.position, Quaternion.identity);
-
-        bomb.Exploded += OnBombExploded;
-        bomb.Init();
-    }
-
-    private void OnBombExploded(Bomb bomb)
-    {
-        bomb.Exploded -= OnBombExploded;
-
-        _spawner.Release(bomb);
+        CubeDestroyed?.Invoke(position);
     }
 }

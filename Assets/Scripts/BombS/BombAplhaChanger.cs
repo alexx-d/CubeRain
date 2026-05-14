@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent (typeof(Rigidbody))]
+[RequireComponent (typeof(Renderer))]
 public class BombAlphaChanger : MonoBehaviour
 {
     private Renderer _renderer;
